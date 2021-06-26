@@ -18,4 +18,4 @@ The use of a JSON editor or validation site such as jsonlint.com is recommended 
 ## Notes
 This plugin wont start The server after shutdown like SmoothRestart! It will need assistance with a restart script or any other software that restarts the server after Shutdown.
 
-Here is a link to my Github with a script that will start, update Rust, update Oxide and Restart the server after shutdown. (Windows Only) https://github.com/jkole4/AIO-Updater
+Here is a link to my Github with a script that will start, update Rust, update Oxide and Restart the server after shutdown. (Windows Only) [https://github.com/jkole4/AIO-Updater](http://)
