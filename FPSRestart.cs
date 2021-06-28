@@ -1,25 +1,29 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Oxide.Plugins
 {
-    [Info("FPS Restart", "RustySpoon", "1.0")]
-    [Description("Restarts server when FPS reaches a specific target")]
+    [Info("FPS Restart", "RustySpoon342", "1.1")]
+    [Description("Restarts the server when FPS reaches a specific target")]
     public class FPSRestart : CovalencePlugin
     {
         private Timer timerObject;
 
         #region Configuration
 
-        private static ConfigData config = new ConfigData();
+        private ConfigData config = new ConfigData();
 
         private class ConfigData
         {
             [JsonProperty(PropertyName = "FPS To Trigger Restart")]
             public float FrameRate = 100;
 
-            [JsonProperty(PropertyName = "How Long The Restart should be")]
+            [JsonProperty(PropertyName = "How Long The Restart Should Be")]
             public float RestartTime = 300;
+
+            [JsonProperty("Show Restart Message To Server")]
+            public bool ShowMessage = true;
         }
 
         protected override void LoadConfig()
@@ -69,20 +73,35 @@ namespace Oxide.Plugins
             timerObject.Destroy();
         }
 
+        protected override void LoadDefaultMessages()
+        {
+            lang.RegisterMessages(new Dictionary<string, string>()
+            {
+                ["RestartMessage"] = "The Server Has Detected Low FPS That May Cause Lag. A Restart Has Begun, stash yo' loot!",
+            }, this);
+        }
         #endregion
 
         #region Core
 
         private void FrameRate()
         {
+            string msg = string.Format(lang.GetMessage("RestartMessage", this));
+
+           float args = config.RestartTime;
+
             if (Performance.report.frameRate > config.FrameRate)
             {
                 return;
             }
-
-            server.Broadcast("The Server Has Detected Low FPS That May Cause Lag. A Restart Has Begun, stash yo' loot!");
+           
+            if (config.ShowMessage)
+            {
+             server.Broadcast(msg);
+            }
+            
             LogWarning("The Server Has Detected Low FPS That May Cause Lag. A Restart Has Begun!");
-            server.Command("restart " + config.RestartTime);
+            server.Command("restart", args);
             timerObject.Destroy();
         }
 
