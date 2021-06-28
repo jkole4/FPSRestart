@@ -12,6 +12,7 @@ The use of a JSON editor or validation site such as jsonlint.com is recommended 
 
 "FPS To Trigger Restart": 100.0,
 "How Long The Restart should be": 300.0
+"Show Restart Message To Server": true
 
 ```
 
